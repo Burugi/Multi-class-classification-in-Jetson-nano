@@ -1,0 +1,31 @@
+# Jetson-nano run
+python3 model_evaluator.py --model ./models/best_student_model.pth --type base --display
+
+python3 model_evaluator.py --model ./models/best_pruned_student.pth --type pruned --display 
+
+python3 model_evaluator.py --model ./models/best_quantized_student.pth --type quantized --display 
+
+
+##########################################################
+
+# base student model
+python student_inference.py --model best_student_model.pth --use-usb
+
+# pruned_model 
+python pruned_student_train.py --data quickdraw_dataset.npz --teacher-model best_teacher_model.pth --epochs 50
+
+python pruned_student_inference.py --model ./models/best_pruned_student.pth
+
+# quantized_model
+python quantized_student_train.py --data quickdraw_dataset.npz --teacher-model best_teacher_model.pth --epochs 50
+
+python quantized_student_inference.py --model ./models/best_quantized_student.pth --use-usb
+
+# model_evaluator.py
+python model_evaluator.py --model best_student_model.pth --type base --display --use-usb
+
+python model_evaluator.py --model ./models/best_pruned_student.pth --type pruned --display --use-usb
+
+python model_evaluator.py --model ./models/best_quantized_student.pth --type quantized --display --use-usb
+
+
